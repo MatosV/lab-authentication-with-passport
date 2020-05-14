@@ -3,22 +3,24 @@
 const { join } = require('path');
 const express = require('express');
 const createError = require('http-errors');
+
+const connectMongo = require('connect-mongo');
+const expressSession = require('express-session');
+
 const logger = require('morgan');
+
+const mongoose = require('mongoose');
+
 const sassMiddleware = require('node-sass-middleware');
 const serveFavicon = require('serve-favicon');
 const bindUserToViewLocals = require('./middleware/bind-user-to-view-locals.js');
-
-const expressSession = require('express-session');
-const connectMongo = require('connect-mongo');
-const mongoose = require('mongoose');
+const indexRouter = require('./routes/index');
+const authenticationRouter = require('./routes/authentication');
 
 //CONNECT PASSPORT
 const passport = require('passport');
 require('./configure-passport');
 //END CONNECT
-
-const indexRouter = require('./routes/index');
-const authenticationRouter = require('./routes/authentication');
 
 const app = express();
 
@@ -60,6 +62,8 @@ app.use(
     })
   })
 );
+
+require('./configure-passport');
 
 //PASSPORT INIT
 app.use(passport.initialize());

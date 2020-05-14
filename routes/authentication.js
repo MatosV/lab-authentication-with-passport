@@ -5,13 +5,23 @@ const authenticationRouter = Router();
 
 const passport = require('passport');
 
-const ensureLogin = require('connect-ensure-login');
+//GIT HUB SIGN IN
 
-authenticationRouter.get('/private-page', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-  res.render(
-    'passport/private'
-  );
-});
+authenticationRouter.get(
+  '/github',
+  passport.authenticate('github', {
+    successRedirect: '/',
+    failureRedirect: '/error'
+  })
+);
+
+authenticationRouter.get(
+  '/github-callback',
+  passport.authenticate('github', {
+    successRedirect: '/',
+    failureRedirect: '/error'
+  })
+);
 
 authenticationRouter.get('/sign-up', (req, res, next) => {
   //console.log(req.user);
