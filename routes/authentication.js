@@ -5,6 +5,8 @@ const authenticationRouter = Router();
 
 const passport = require('passport');
 
+const routeGuard = require('./../middleware/route-guard');
+
 //GIT HUB SIGN IN
 
 authenticationRouter.get(
@@ -18,7 +20,7 @@ authenticationRouter.get(
 authenticationRouter.get(
   '/github-callback',
   passport.authenticate('github', {
-    successRedirect: '/',
+    successRedirect: '/authentication/private',
     failureRedirect: '/error'
   })
 );
@@ -43,10 +45,15 @@ authenticationRouter.get('/sign-in', (req, res, next) => {
 authenticationRouter.post(
   '/sign-in',
   passport.authenticate('sign-in', {
-    successRedirect: '/',
+    successRedirect: '/authentication/private',
     failureRedirect: '/authentication/sign-in'
   })
 );
+
+
+authenticationRouter.get('/private', routeGuard, (req, res, next) => {
+  res.render('authentication/private');
+});
 
 authenticationRouter.post('/sign-out', (req, res, next) => {
   req.logout();

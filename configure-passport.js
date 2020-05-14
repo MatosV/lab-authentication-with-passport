@@ -43,9 +43,12 @@ passport.use(
       const githubId = profile.id;
 
       User.findOne({
+        
         githubId
       })
+      
         .then((user) => {
+          //console.log(user)
           if (user) {
             return Promise.resolve(user);
           } else {
